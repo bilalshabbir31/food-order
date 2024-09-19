@@ -8,16 +8,12 @@ import CartItem from "./CartItem";
 
 const Cart = () => {
   const { items, addItem, removeItem } = useContext(CartContext);
-  const { progress, hideCart } = useContext(UserProgressContext);
+  const { progress, hideCart, showCheckout } = useContext(UserProgressContext);
 
   const cartTotal = items.reduce((totalPrice, item) => totalPrice + item.quantity * item.price, 0)
 
-  function handleCloseCart() {
-    hideCart();
-  }
-
   return (
-    <Modal className="cart" open={progress === 'cart'}>
+    <Modal className="cart" open={progress === 'cart'} onClose={ progress === 'cart' ? hideCart: null}>
       <h2>Your Cart</h2>
       <ul>
         {items.map((item) =>
@@ -29,8 +25,8 @@ const Cart = () => {
         {currencyFormatter.format(cartTotal)}
       </p>
       <p className="modal-action">
-        <Button textOnly onClick={handleCloseCart}>Close</Button>
-        <Button>Go to Checkout</Button>
+        <Button textOnly onClick={hideCart}>Close</Button>
+        {items.length > 0 && (<Button onClick={showCheckout}>Go to Checkout</Button>)}
       </p>
     </Modal>
   )
