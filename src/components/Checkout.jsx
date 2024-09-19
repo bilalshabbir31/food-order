@@ -20,7 +20,7 @@ const Checkout = () => {
   const { items, clearCart } = useContext(CartContext);
   const { progress, hideCheckout } = useContext(UserProgressContext);
 
-  const { data, isLoading: isSending, error, sendRequest } = useHttp('http://localhost:3000/orders', requestConfig);
+  const { data, isLoading: isSending, error, sendRequest, clearData } = useHttp('http://localhost:3000/orders', requestConfig);
 
   const cartTotal = items.reduce((totalPrice, item) => totalPrice + item.quantity * item.price, 0)
 
@@ -41,6 +41,7 @@ const Checkout = () => {
   function handleFinished() {
     hideCheckout();
     clearCart();
+    clearData();
   }
 
   let actions = (
